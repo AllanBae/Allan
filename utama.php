@@ -47,15 +47,15 @@ function perpus_modulku() {
                         <a class="nav-link" href="admin.php?page=perpus_utama&panggil=buku.php">Entry Data Buku</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin.php?page=perpus_utama&panggil=pengunjung.php">Entry Data Pengunjung</a>
+                        <a class="nav-link" href="admin.php?page=perpus_utama&panggil=pengunjung.php">Entry Data Anggota</a>
                     </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Master</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=jenis.php">Manajemen Jenis Keluhan</a></li>
-                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=bagian.php">Bagian</a></li>
-                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=mahasiswa.php">Mahasiswa</a></li>
-                            <li><a class="dropdown-item" href="#">A third link</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=jenis.php">pp</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=bagian.php">ppp</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=mahasiswa.php">pppp</a></li>
+                            <li><a class="dropdown-item" href="#">ppppp</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
