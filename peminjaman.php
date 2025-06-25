@@ -1,5 +1,4 @@
 <?php
-
 // Proses hapus jika ada parameter ?hapus
 if (isset($_GET['hapus'])) {
     $idHapus = $conn->real_escape_string($_GET['hapus']);
@@ -8,12 +7,17 @@ if (isset($_GET['hapus'])) {
 }
 
 // Ambil data peminjaman
-$sql = "SELECT peminjaman.*, pengunjung.nama_pengunjung 
+$sql = "SELECT peminjaman.*, anggota.nama_anggota 
         FROM peminjaman 
-        LEFT JOIN pengunjung ON peminjaman.id_pengunjung = pengunjung.id_pengunjung 
-        ORDER BY id_peminjaman ASC";
+        LEFT JOIN anggota ON peminjaman.id_anggota = anggota.id_anggota 
+        ORDER BY peminjaman.id_peminjaman ASC";
 
 $result = $conn->query($sql);
+
+// Tampilkan error jika query gagal
+if (!$result) {
+    die("Query error: " . $conn->error);
+}
 ?>
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -27,8 +31,8 @@ $result = $conn->query($sql);
             <th>No</th>
             <th>Tanggal Pinjam</th>
             <th>Tanggal Kembali</th>
-            <th>ID Pengunjung</th>
-            <th>Nama Pengunjung</th>
+            <th>ID Anggota</th>
+            <th>Nama Anggota</th>
             <th>Aksi</th>
         </tr>
     </thead>
@@ -40,8 +44,8 @@ $result = $conn->query($sql);
                 <td><?= $no++ ?></td>
                 <td><?= $row['tgl_pinjam'] ?></td>
                 <td><?= $row['tgl_kembali'] ?></td>
-                <td><?= $row['id_pengunjung'] ?></td>
-                <td><?= htmlspecialchars($row['nama_pengunjung']) ?></td>
+                <td><?= $row['id_anggota'] ?></td>
+                <td><?= htmlspecialchars($row['nm_anggota']) ?></td>
                 <td>
                     <a href="admin.php?page=perpus_utama&panggil=peminjaman.php&hapus=<?= $row['id_peminjaman'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</a>
                 </td>

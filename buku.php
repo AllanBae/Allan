@@ -20,7 +20,7 @@ $result = $conn->query($sql);
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <h2 class="text-center">Daftar Buku</h2>
-<a href="admin.php?page=perpus_utama&panggil=tambah_buku.php" class="btn btn-primary mb-3">Tambah Buku</a>
+<a href="admin.php?page=perpus_utama&panggil=tambah_buku.php" class="btn btn-primary mb-3"><i class="fa fa-plus"></i>Tambah Buku</a>
 
 
 <table class="table table-bordered table-striped">
