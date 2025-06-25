@@ -23,7 +23,7 @@ if (!$result) {
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 
 <h2 class="text-center">Data Peminjaman</h2>
-<a href="admin.php?page=perpus_utama&panggil=tambah_peminjaman.php" class="btn btn-primary mb-3">Tambah Peminjaman</a>
+<a href="admin.php?page=perpus_utama&panggil=tambah_peminjaman.php" class="btn btn-primary mb-3"><i class="fa fa-plus"></i>Tambah Peminjaman</a>
 
 <table class="table table-bordered table-striped">
     <thead class="table-dark">
