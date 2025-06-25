@@ -7,7 +7,7 @@ if (isset($_GET['hapus'])) {
 }
 
 // Ambil data peminjaman
-$sql = "SELECT peminjaman.*, anggota.nama_anggota 
+$sql = "SELECT peminjaman.*, anggota.nm_anggota 
         FROM peminjaman 
         LEFT JOIN anggota ON peminjaman.id_anggota = anggota.id_anggota 
         ORDER BY peminjaman.id_peminjaman ASC";
