@@ -47,23 +47,24 @@ function perpus_modulku() {
                         <a class="nav-link" href="admin.php?page=perpus_utama&panggil=buku.php">Entry Data Buku</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="admin.php?page=perpus_utama&panggil=pengunjung.php">Entry Data Anggota</a>
+                        <a class="nav-link" href="admin.php?page=perpus_utama&panggil=copy_buku.php">Entry Data Copy Buku</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="admin.php?page=perpus_utama&panggil=anggota.php">Entry Data Anggota</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Master</a>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Transaksi</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=jenis.php">pp</a></li>
-                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=bagian.php">ppp</a></li>
-                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=mahasiswa.php">pppp</a></li>
-                            <li><a class="dropdown-item" href="#">ppppp</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=peminjaman.php">Peminjaman</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=pengembalian.php">Pengembalian</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=utama&panggil=denda.php">Denda</a></li>
                         </ul>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Dropdown</a>
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Laporan</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Link</a></li>
-                            <li><a class="dropdown-item" href="#">Another link</a></li>
-                            <li><a class="dropdown-item" href="#">A third link</a></li>
+                            <li><a class="dropdown-item" href="#">Peminjaman</a></li>
+                            <li><a class="dropdown-item" href="#">Pengembalian</a></li>
                         </ul>
                     </li>
                 </ul>
