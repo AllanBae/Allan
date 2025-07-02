@@ -1,6 +1,6 @@
 <?php
 
-// Generate nomor pengembalian
+// Generate nomor pengembalian otomatis
 function generateNoPengembalian($conn) {
     $result = $conn->query("SELECT MAX(CAST(SUBSTRING(no_pengembalian, 3) AS UNSIGNED)) AS max_num FROM pengembalian");
     $row = $result->fetch_assoc();
@@ -13,25 +13,28 @@ if (isset($_POST['simpan'])) {
     $tgl_pengembalian = $_POST['tgl_pengembalian'];
     $id_anggota = $_POST['id_anggota'];
     $no_peminjaman = $_POST['no_peminjaman'];
+    $status_denda = $_POST['status_denda'];
     $no_pengembalian = generateNoPengembalian($conn);
 
-    // Simpan ke pengembalian
-    $conn->query("INSERT INTO pengembalian (no_pengembalian, no_peminjaman, tgl_pengembalian) 
-                  VALUES ('$no_pengembalian', '$no_peminjaman', '$tgl_pengembalian')");
+    // Simpan ke tabel pengembalian
+    $conn->query("INSERT INTO pengembalian 
+        (no_pengembalian, no_peminjaman, tgl_pengembalian, status_pengembalian, status_denda) 
+        VALUES 
+        ('$no_pengembalian', '$no_peminjaman', '$tgl_pengembalian', 'selesai', '$status_denda')");
 
+    // Simpan detail ke tabel bisa
     foreach ($_POST['no_copy_buku'] as $i => $no_copy) {
         $jumlah_kembali = (int)$_POST['jumlah_kembali'][$i];
         $jumlah_max = (int)$_POST['jumlah_max'][$i];
 
         if ($jumlah_kembali > $jumlah_max) {
-            $jumlah_kembali = $jumlah_max; // Batasi ke maksimal
+            $jumlah_kembali = $jumlah_max;
         }
 
-        // Simpan ke bisa
         $conn->query("INSERT INTO bisa (no_pengembalian, no_copy_buku, jml_kembali)
                       VALUES ('$no_pengembalian', '$no_copy', $jumlah_kembali)");
 
-        // Update status copy_buku
+        // Ubah status buku
         $conn->query("UPDATE copy_buku SET status_buku = 'tersedia' 
                       WHERE no_copy_buku = '$no_copy'");
     }
@@ -44,14 +47,14 @@ if (isset($_POST['simpan'])) {
 // Ambil data anggota
 $anggota_result = $conn->query("SELECT id_anggota, nm_anggota FROM anggota ORDER BY nm_anggota ASC");
 
-// Ambil semua nomor peminjaman dan data anggota
+// Ambil data peminjaman
 $peminjaman_result = $conn->query("
     SELECT p.no_peminjaman, p.id_anggota, a.nm_anggota 
     FROM peminjaman p 
     JOIN anggota a ON p.id_anggota = a.id_anggota
 ");
 
-// Ambil semua detail buku dari semua peminjaman
+// Ambil detail buku
 $detail_buku_query = $conn->query("
     SELECT 
         d.no_peminjaman,
@@ -69,7 +72,6 @@ while ($row = $detail_buku_query->fetch_assoc()) {
     $detail_buku[$row['no_peminjaman']][] = $row;
 }
 ?>
-
 
 <h3>Tambah Pengembalian Buku</h3>
 
@@ -103,7 +105,15 @@ while ($row = $detail_buku_query->fetch_assoc()) {
         </select>
     </div>
 
-    <!-- ✅ Table header sudah tampil sejak awal -->
+    <div class="mb-3" style="width: 200px;">
+        <label>Status Denda</label>
+        <select name="status_denda" class="form-select form-select-sm" required>
+            <option value="">-- Pilih Status --</option>
+            <option value="aman">Aman</option>
+            <option value="terdenda">Terdenda</option>
+        </select>
+    </div>
+
     <div class="mb-3 bg-light p-3 rounded">
         <table class="table table-bordered">
             <thead>
@@ -117,7 +127,7 @@ while ($row = $detail_buku_query->fetch_assoc()) {
                 </tr>
             </thead>
             <tbody id="tabelPengembalianBody">
-                <!-- ✅ Body akan diisi otomatis oleh JavaScript -->
+                <!-- Akan terisi otomatis oleh JS -->
             </tbody>
         </table>
     </div>
@@ -127,18 +137,17 @@ while ($row = $detail_buku_query->fetch_assoc()) {
 </form>
 
 <script>
-// ✅ Data buku per nomor peminjaman
+// Data buku per peminjaman
 const dataBuku = <?= json_encode($detail_buku) ?>;
 
 function tampilkanTabel() {
     const noPeminjaman = document.getElementById('peminjamanSelect').value;
     const tbody = document.getElementById('tabelPengembalianBody');
-
     tbody.innerHTML = '';
 
     if (!noPeminjaman || !dataBuku[noPeminjaman]) {
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td colspan="6" class="text-center text-danger">Tidak ada data buku untuk nomor peminjaman ini.</td>`;
+        tr.innerHTML = `<td colspan="6" class="text-center text-danger">Tidak ada data buku.</td>`;
         tbody.appendChild(tr);
         return;
     }
@@ -167,11 +176,9 @@ function tampilkanTabel() {
                 <button type="button" class="btn btn-danger btn-sm btn-hapus">-</button>
             </td>
         `;
-
         tbody.appendChild(tr);
     });
 
-    // Tambahkan event tombol hapus
     tbody.querySelectorAll('.btn-hapus').forEach(btn => {
         btn.addEventListener('click', (e) => {
             e.target.closest('tr').remove();
@@ -179,4 +186,3 @@ function tampilkanTabel() {
     });
 }
 </script>
-
