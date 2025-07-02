@@ -155,6 +155,8 @@ function perpus_tambah_menu() {
         'perpus_utama&panggil=denda.php',
         'perpus_modulku'
     );
+
+    
 }
 add_action('admin_menu', 'perpus_tambah_menu');
 ?>
