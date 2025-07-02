@@ -1,109 +1,42 @@
 <?php
-// Koneksi ke database
 $conn = new mysqli("localhost", "root", "", "db_ti6b_uas");
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
-}
+if ($conn->connect_error) die("Koneksi gagal: " . $conn->connect_error);
 
-// Proses simpan data
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $no_denda = $_POST['no_denda'];
-    $tgl_denda = $_POST['tgl_denda'];
-    $tarif_denda = $_POST['tarif_denda'];
-    $alasan_denda = $_POST['alasan_denda'];
+// Ambil pengembalian yang status_denda = 'terdenda' dan belum masuk denda
+$pengembalian = $conn->query("SELECT no_pengembalian FROM pengembalian 
+                              WHERE status_denda = 'terdenda' 
+                              AND no_pengembalian NOT IN (SELECT no_pengembalian FROM denda)");
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $no_pengembalian = $_POST['no_pengembalian'];
+    $tarif = $_POST['tarif_denda'];
+    $alasan = $_POST['alasan_denda'];
+    $tgl = date('Y-m-d');
+    $no_denda = "DN" . time();
 
-    $sql = "INSERT INTO denda (no_denda, tgl_denda, tarif_denda, alasan_denda, no_pengembalian)
-            VALUES ('$no_denda', '$tgl_denda', '$tarif_denda', '$alasan_denda', '$no_pengembalian')";
+    $conn->query("INSERT INTO denda (no_denda, tgl_denda, tarif_denda, alasan_denda, no_pengembalian) 
+                  VALUES ('$no_denda', '$tgl', '$tarif', '$alasan', '$no_pengembalian')");
 
-    if ($conn->query($sql) === TRUE) {
-        echo "<script>
-                alert('Data berhasil ditambahkan!');
-                window.location.href='admin.php?page=perpus_utama&panggil=tambah_denda.php';
-              </script>";
-        exit;
-    } else {
-        echo "<p style='color:red;'>Error: " . $conn->error . "</p>";
-    }
+    // Update status denda
+    $conn->query("UPDATE pengembalian SET status_denda='terdenda' WHERE no_pengembalian='$no_pengembalian'");
+
+    echo "<script>alert('Denda ditambahkan');location.href='admin.php?page=perpus_utama&panggil=denda.php';</script>";
 }
-
-// Ambil data pengembalian
-$pengembalian = $conn->query("SELECT no_pengembalian, tgl_pengembalian FROM pengembalian");
 ?>
 
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <title>Tambah Denda</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f4f7fc;
-        }
-        .container {
-            width: 500px;
-            margin: 50px auto;
-            background: #ffffff;
-            padding: 20px;
-            border: 1px solid #ddd;
-        }
-        h2 {
-            text-align: center;
-            color: #2c3e50;
-        }
-        label {
-            display: block;
-            margin-top: 10px;
-            font-weight: bold;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            box-sizing: border-box;
-            border: 1px solid #ccc;
-        }
-        input[type="submit"] {
-            margin-top: 20px;
-            background-color: #3498db;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-        input[type="submit"]:hover {
-            background-color: #2980b9;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h2>Bayar Denda Wak</h2>
-        <form method="post">
-            <label>No Denda</label>
-            <input type="text" name="no_denda" required>
-
-            <label>Tanggal Denda</label>
-            <input type="date" name="tgl_denda" required>
-
-            <label>Tarif Denda</label>
-            <input type="number" name="tarif_denda" required>
-
-            <label>Alasan Denda</label>
-            <input type="text" name="alasan_denda" required>
-
-            <label>Pilih No Pengembalian</label>
-            <select name="no_pengembalian" required>
-                <option value="">-- Pilih Pengembalian --</option>
-                <?php while ($row = $pengembalian->fetch_assoc()): ?>
-                    <option value="<?= $row['no_pengembalian']; ?>">
-                        <?= $row['no_pengembalian']; ?> - <?= $row['tgl_pengembalian']; ?>
-                    </option>
-                <?php endwhile; ?>
-            </select>
-
-            <input type="submit" value="Simpan">
-        </form>
-    </div>
-</body>
-</html>
+<h3>Tambah Denda</h3>
+<form method="POST">
+    <label>Pilih No Pengembalian</label>
+    <select name="no_pengembalian" class="form-control" required>
+        <option value="">-- Pilih --</option>
+        <?php while($r = $pengembalian->fetch_assoc()): ?>
+        <option value="<?= $r['no_pengembalian'] ?>"><?= $r['no_pengembalian'] ?></option>
+        <?php endwhile; ?>
+    </select>
+    <label>Tarif Denda</label>
+    <input type="number" name="tarif_denda" required class="form-control">
+    <label>Alasan Denda</label>
+    <input type="text" name="alasan_denda" required class="form-control mt-1">
+    <br>
+    <button type="submit" class="btn btn-success">Simpan</button>
+</form>
