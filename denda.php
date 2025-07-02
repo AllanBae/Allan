@@ -8,30 +8,36 @@ $denda = $conn->query("SELECT d.*, a.nm_anggota FROM denda d
     LEFT JOIN anggota a ON pm.id_anggota = a.id_anggota");
 ?>
 
-<h3>Data Denda</h3>
-<a href="admin.php?page=perpus_utama&panggil=tambah_denda.php" class="btn btn-primary mb-2">+ Tambah Denda</a>
+<div class="container-fluid mt-4">
+  <h2 class="text-center">Data Denda</h2>
+  <a href="admin.php?page=perpus_utama&panggil=tambah_denda.php" class="btn btn-primary mb-3">+ Tambah Denda</a>
 
-<table class="table table-bordered">
-  <thead>
-    <tr>
-      <th>No</th>
-      <th>No Denda</th>
-      <th>Nama Anggota</th>
-      <th>Tarif</th>
-      <th>Alasan</th>
-      <th>Tanggal Denda</th>
-    </tr>
-  </thead>
-  <tbody>
-    <?php $no=1; while($row = $denda->fetch_assoc()): ?>
-    <tr>
-      <td><?= $no++ ?></td>
-      <td><?= $row['no_denda'] ?></td>
-      <td><?= $row['nm_anggota'] ?></td>
-      <td><?= $row['tarif_denda'] ?></td>
-      <td><?= $row['alasan_denda'] ?></td>
-      <td><?= $row['tgl_denda'] ?></td>
-    </tr>
-    <?php endwhile; ?>
-  </tbody>
-</table>
+  <table class="table table-bordered table-striped">
+    <thead class="table-dark">
+      <tr>
+        <th>No</th>
+        <th>No Denda</th>
+        <th>Nama Anggota</th>
+        <th>Tarif</th>
+        <th>Alasan</th>
+        <th>Tanggal Denda</th>
+        <th class="text-center">Aksi</th>
+      </tr>
+    </thead>
+    <tbody>
+      <?php $no = 1; while ($row = $denda->fetch_assoc()): ?>
+        <tr>
+          <td><?= $no++ ?></td>
+          <td><?= $row['no_denda'] ?></td>
+          <td><?= $row['nm_anggota'] ?></td>
+          <td>Rp<?= number_format($row['tarif_denda'], 0, ',', '.') ?></td>
+          <td><?= $row['alasan_denda'] ?></td>
+          <td><?= date('d-m-Y', strtotime($row['tgl_denda'])) ?></td>
+          <td class="text-center">
+            <a href="admin.php?page=perpus_utama&panggil=hapus_denda.php&id=<?= $row['no_denda'] ?>" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus data ini?')">Hapus</a>
+          </td>
+        </tr>
+      <?php endwhile; ?>
+    </tbody>
+  </table>
+</div>
