@@ -56,6 +56,7 @@ function perpus_modulku() {
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" href="admin.php?page=perpus_utama&panggil=peminjaman.php">Entry Peminjaman</a></li>
                             <li><a class="dropdown-item" href="admin.php?page=perpus_utama&panggil=pengembalian.php">Entry Pengembalian</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=perpus_utama&panggil=kunjungan.php">Kunjungan</a></li>
                         </ul>
                     </li>
 
@@ -63,8 +64,8 @@ function perpus_modulku() {
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Cetak</a>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Cetak Laporan Peminjaman</a></li>
-                            <li><a class="dropdown-item" href="#">Cetak Laporan Pengembalian</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=perpus_utama&panggil=laporan_peminjaman.php">Cetak Laporan Peminjaman</a></li>
+                            <li><a class="dropdown-item" href="admin.php?page=perpus_utama&panggil=laporan_pengembalian.php">Cetak Laporan Pengembalian</a></li>
                         </ul>
                     </li>
 
